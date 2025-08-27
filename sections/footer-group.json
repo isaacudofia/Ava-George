@@ -1,0 +1,42 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "logo": "shopify://shop_images/logo-removebg-preview.png",
+        "logo_width": 140,
+        "brand_name": "Ava&George",
+        "brand_description": "Ava and George is a fashion brand that aims to help customers create timeless moments, one outfit at a time.",
+        "phone_number": "+391 (0)35 2568 4593",
+        "email_address": "kidsgrooves@domain.com",
+        "address": "502 New Design , Melbourne",
+        "show_social": true,
+        "company_heading": "OUR COMPANY",
+        "company_menu": "",
+        "quick_links_heading": "QUICK LINKS",
+        "quick_links_menu": "",
+        "newsletter_heading": "Subscribe to our emails",
+        "newsletter_description": "Join 60.000+ subscribers and get a new discount coupon on every Saturday.",
+        "show_payment_icons": true,
+        "margin_top": 0,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

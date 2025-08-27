@@ -1,0 +1,439 @@
+{% doc %}
+  @prompt
+    Create a responsive trust badges section with four columns featuring: 1) 100 Days Return with exchange icon and "For an Exchange Product" text, 2) Secure Card with payment security icon and "Safe payment with PEV" text, 3) Customer Services with support icon and "Contact us Anytime" text, and 4) Free Shipping with delivery icon and "For all Orders Over $100" text. Make it fully responsive with proper spacing, clean typography, and professional styling that works on all device sizes.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-trust-badges-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-trust-badges-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-trust-badges-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    align-items: start;
+  }
+
+  .ai-trust-badge-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: {{ block.settings.badge_padding }}px;
+    background-color: {{ block.settings.badge_background_color }};
+    border-radius: {{ block.settings.badge_border_radius }}px;
+    border: {{ block.settings.badge_border_width }}px solid {{ block.settings.badge_border_color }};
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-trust-badge-{{ ai_gen_id }}:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-trust-badge-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    margin-bottom: {{ block.settings.icon_margin }}px;
+    color: {{ block.settings.icon_color }};
+    flex-shrink: 0;
+  }
+
+  .ai-trust-badge-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.text_gap }}px;
+  }
+
+  .ai-trust-badge-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+    color: {{ block.settings.title_color }};
+    margin: 0 0 {{ block.settings.title_margin }}px 0;line-height: 1.3;
+  }
+
+  .ai-trust-badge-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-trust-badges-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+      gap: {{ block.settings.grid_gap | times: 0.75 }}px;
+    }
+
+    .ai-trust-badge-{{ ai_gen_id }} {
+      padding: {{ block.settings.badge_padding | times: 0.75 }}px;
+    }
+
+    .ai-trust-badge-icon-{{ ai_gen_id }} {
+      width: {{ block.settings.icon_size | times: 0.85 }}px;
+      height: {{ block.settings.icon_size | times: 0.85 }}px;
+    }
+
+    .ai-trust-badge-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+    }
+
+    .ai-trust-badge-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .ai-trust-badges-container-{{ ai_gen_id }} {
+      padding: 0 15px;
+    }
+
+    .ai-trust-badges-grid-{{ ai_gen_id }} {
+      gap: {{ block.settings.grid_gap | times: 0.5 }}px;
+    }
+  }
+{% endstyle %}<div class="ai-trust-badges-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-trust-badges-container-{{ ai_gen_id }}">
+    <div class="ai-trust-badges-grid-{{ ai_gen_id }}">
+      <div class="ai-trust-badge-{{ ai_gen_id }}">
+        <div class="ai-trust-badge-icon-{{ ai_gen_id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M12 7v5l42"/>
+          </svg>
+        </div>
+        <div class="ai-trust-badge-content-{{ ai_gen_id }}">
+          <h3 class="ai-trust-badge-title-{{ ai_gen_id }}">{{ block.settings.badge_1_title }}</h3>
+          <p class="ai-trust-badge-text-{{ ai_gen_id }}">{{ block.settings.badge_1_text }}</p>
+        </div>
+      </div>
+
+      <div class="ai-trust-badge-{{ ai_gen_id }}">
+        <div class="ai-trust-badge-icon-{{ ai_gen_id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="5" rx="2"/>
+            <line x1="2" x2="22" y1="10" y2="10"/>
+            <path d="M6 15h4"/>
+            <path d="M10 15h2"/>
+          </svg>
+        </div>
+        <div class="ai-trust-badge-content-{{ ai_gen_id }}">
+          <h3 class="ai-trust-badge-title-{{ ai_gen_id }}">{{ block.settings.badge_2_title }}</h3>
+          <p class="ai-trust-badge-text-{{ ai_gen_id }}">{{ block.settings.badge_2_text }}</p>
+        </div>
+      </div>
+
+      <div class="ai-trust-badge-{{ ai_gen_id }}">
+        <div class="ai-trust-badge-icon-{{ ai_gen_id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4"/>
+            <path d="M21 12c.552 0 1-.448 1-1V8a2 2 0 0 0-2-2h-1a2 2 0 0 1-2-2V3a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v1a2 2 0 0 1-2 2H4a2 2 0 0 0-2 2v3c0 .552.448 1 1 1h1a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2h3c.552 0 1-.448 1-1v-1a2 2 0 0 1 2-2h1"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <div class="ai-trust-badge-content-{{ ai_gen_id }}">
+          <h3 class="ai-trust-badge-title-{{ ai_gen_id }}">{{ block.settings.badge_3_title }}</h3>
+          <p class="ai-trust-badge-text-{{ ai_gen_id }}">{{ block.settings.badge_3_text }}</p>
+        </div>
+      </div>
+
+      <div class="ai-trust-badge-{{ ai_gen_id }}">
+        <div class="ai-trust-badge-icon-{{ ai_gen_id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 3h5v5"/>
+            <path d="M8 3H3v5"/>
+            <path d="M12 22v-8.3a44 0 0 0-1.172-2.872L3 3"/>
+            <path d="M21 3l-7.828 7.828A4 4 0 0 0 12 13.657V22"/>
+          </svg>
+        </div>
+        <div class="ai-trust-badge-content-{{ ai_gen_id }}">
+          <h3 class="ai-trust-badge-title-{{ ai_gen_id }}">{{ block.settings.badge_4_title }}</h3>
+          <p class="ai-trust-badge-text-{{ ai_gen_id }}">{{ block.settings.badge_4_text }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {"value": "2", "label": "2"},
+        {"value": "3", "label": "3"},
+        {"value": "4", "label": "4"}
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {"value": "1", "label": "1"},
+        {"value": "2", "label": "2"}
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Badge style"
+    },
+    {
+      "type": "range",
+      "id": "badge_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Badge padding",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "badge_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "badge_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge border width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "badge_background_color",
+      "label": "Badge background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "badge_border_color",
+      "label": "Badge border",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "header",
+      "content": "Icon style"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "icon_margin",
+      "min": 10,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Icon bottom margin",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Text style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "title_margin",
+      "min": 5,
+      "max": 20,
+      "step": 5,
+      "unit": "px",
+      "label": "Title bottom margin",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        {"value": "400", "label": "Normal"},
+        {"value": "500", "label": "Medium"},
+        {"value": "600", "label": "Semi-bold"},
+        {"value": "700", "label": "Bold"}
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_gap",
+      "min": 5,
+      "max": 20,
+      "step": 5,
+      "unit": "px",
+      "label": "Text gap",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Badge1 - Returns"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_title",
+      "label": "Title",
+      "default": "100 Days Return"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_text",
+      "label": "Text",
+      "default": "For an Exchange Product"
+    },
+    {
+      "type": "header",
+      "content": "Badge 2 - Security"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_title",
+      "label": "Title",
+      "default": "Secure Card"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_text",
+      "label": "Text",
+      "default": "Safe payment with PEV"
+    },
+    {
+      "type": "header",
+      "content": "Badge 3 - Support"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_title",
+      "label": "Title",
+      "default": "Customer Services"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_text",
+      "label": "Text",
+      "default": "Contact us Anytime"
+    },
+    {
+      "type": "header",
+      "content": "Badge 4 - Shipping"
+    },
+    {
+      "type": "text",
+      "id": "badge_4_title",
+      "label": "Title",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "badge_4_text",
+      "label": "Text",
+      "default": "For all Orders Over $100"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust badges"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

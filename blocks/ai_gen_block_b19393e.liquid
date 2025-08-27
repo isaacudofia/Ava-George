@@ -1,0 +1,496 @@
+{% doc %}
+  @prompt
+    Create a responsive promotional banner section with three side-by-side cards featuring discount offers. Each card should have a background image, overlay text with discount percentage and description, and a "SHOP NOW" button. The layout should stack vertically on mobile devices and display horizontally on desktop. Include customizable settings for images, text, discount percentages, button text, and links for each card., I don't want "SHOP NOW" as a button but link a link that has a underline with a nice colored animation on hover, Good the animation should as be on the "SHOP NOW" as well, I want the image to zoom out a bit on hover. I also don't want "Description". I 'll prefer everything to be on the "Discount text" can change the name of the label to something else other than "Discount text". I want it to be like "Get 10% off on Baby Styles!", I also need an option to control the card width
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-promo-banner-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-promo-banner__container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-promo-banner__grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.card_spacing }}px;
+    justify-items: center;
+  }
+
+  .ai-promo-banner__card-{{ ai_gen_id }} {
+    position: relative;
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    min-height: {{ block.settings.card_height }}px;
+    width: 100%;
+    max-width: {{ block.settings.card_max_width }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    z-index: 1;
+  }
+
+  .ai-promo-banner__card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+    z-index: 2;
+  }
+
+  .ai-promo-banner__card-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.4s ease;
+    transform: scale(1);
+  }
+
+  .ai-promo-banner__card-{{ ai_gen_id }}:hover .ai-promo-banner__card-image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-promo-banner__card-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .ai-promo-banner__card-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-promo-banner__card-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity | divided_by: 100.0 }});
+    z-index: 2;
+  }
+
+  .ai-promo-banner__card-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 3;
+    text-align: {{ block.settings.text_alignment }};
+    color: {{ block.settings.text_color }};
+    padding: 30px;
+    width: 100%;
+  }
+
+  .ai-promo-banner__offer-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.offer_font_size }}px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    line-height: 1.2;
+  }
+
+  .ai-promo-banner__link-{{ ai_gen_id }} {
+    position: relative;
+    display: inline-block;
+    color: {{ block.settings.link_color }};
+    text-decoration: none;
+    font-weight: 600;
+    font-size: {{ block.settings.link_font_size }}px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid {{ block.settings.link_underline_color }};
+    padding-bottom: 2px;
+    transition: color 0.3s ease;
+  }
+
+  .ai-promo-banner__link-{{ ai_gen_id }}::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: {{ block.settings.link_hover_underline_color }};
+    transition: width 0.4s ease;
+  }
+
+  .ai-promo-banner__link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-promo-banner__link-{{ ai_gen_id }}:hover::after {
+    width: 100%;
+  }
+
+  .ai-promo-banner__card-{{ ai_gen_id }}:hover .ai-promo-banner__link-{{ ai_gen_id }} {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-promo-banner__card-{{ ai_gen_id }}:hover .ai-promo-banner__link-{{ ai_gen_id }}::after {
+    width: 100%;
+  }
+
+  .ai-promo-banner__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-promo-banner__grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+      gap: {{ block.settings.card_spacing | times: 0.75 }}px;
+    }
+
+    .ai-promo-banner__card-{{ ai_gen_id }} {
+      min-height: {{ block.settings.card_height | times: 0.8 }}px;
+      max-width: {{ block.settings.card_max_width | times: 0.9 }}px;
+    }
+
+    .ai-promo-banner__card-content-{{ ai_gen_id }} {
+      padding: 20px;
+    }
+
+    .ai-promo-banner__offer-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.offer_font_size | times: 0.85 }}px;
+    }
+
+    .ai-promo-banner__link-{{ ai_gen_id }} {
+      font-size: {{ block.settings.link_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-promo-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-promo-banner__container-{{ ai_gen_id }}">
+    <div class="ai-promo-banner__grid-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        {% liquid
+          assign card_image_key = 'card_' | append: i | append: '_image'
+          assign card_offer_key = 'card_' | append: i | append: '_offer_text'
+          assign card_link_text_key = 'card_' | append: i | append: '_link_text'
+          assign card_link_key = 'card_' | append: i | append: '_link'
+
+          assign card_image = block.settings[card_image_key]
+          assign card_offer = block.settings[card_offer_key]
+          assign card_link_text = block.settings[card_link_text_key]
+          assign card_link = block.settings[card_link_key]
+        %}
+
+        <a 
+          href="{{ card_link | default: '#' }}" 
+          class="ai-promo-banner__card-{{ ai_gen_id }}"
+          {% unless card_link %}onclick="return false;"{% endunless %}
+        >
+          {% if card_image %}
+            <img
+              src="{{ card_image | image_url: width: 600 }}"
+              alt="{{ card_image.alt | escape }}"
+              class="ai-promo-banner__card-image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="{{ card_image.width }}"
+              height="{{ card_image.height }}"
+            >
+          {% else %}
+            <div class="ai-promo-banner__card-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+
+          <div class="ai-promo-banner__card-overlay-{{ ai_gen_id }}"></div>
+
+          <div class="ai-promo-banner__card-content-{{ ai_gen_id }}">
+            {% if card_offer != blank %}
+              <h3 class="ai-promo-banner__offer-text-{{ ai_gen_id }}">{{ card_offer }}</h3>
+            {% endif %}
+
+            {% if card_link_text != blank %}
+              <span class="ai-promo-banner__link-{{ ai_gen_id }}">
+                {{ card_link_text }}
+              </span>
+            {% endif %}
+          </div>
+
+          {% unless card_image %}
+            <div class="ai-promo-banner__empty-state-{{ ai_gen_id }}">
+              Add an image for card {{ i }}
+            </div>
+          {% endunless %}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Promotional banner cards",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {"value": "1", "label": "1"},
+        {"value": "2", "label": "2"},
+        {"value": "3", "label": "3"}
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {"value": "1", "label": "1"},
+        {"value": "2", "label": "2"}
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "card_spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card spacing",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "label": "Card height",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "card_max_width",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Card max width",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Overlay and text"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "offer_font_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Offer text font size",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Link style"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_underline_color",
+      "label": "Underline color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_underline_color",
+      "label": "Hover underline color",
+      "default": "#ff6b6b"
+    },
+    {
+      "type": "range",
+      "id": "link_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Link font size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "card_1_offer_text",
+      "label": "Offer text",
+      "default": "Get 50% off on Summer Styles!"
+    },
+    {
+      "type": "text",
+      "id": "card_1_link_text",
+      "label": "Link text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "card_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "card_2_offer_text",
+      "label": "Offer text",
+      "default": "Get 30% off on New Arrivals!"
+    },
+    {
+      "type": "text",
+      "id": "card_2_link_text",
+      "label": "Link text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "card_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "card_3_offer_text",
+      "label": "Offer text",
+      "default": "Buy 2 Get 1 Free on Baby Styles!"
+    },
+    {
+      "type": "text",
+      "id": "card_3_link_text",
+      "label": "Link text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "card_3_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional banner cards"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

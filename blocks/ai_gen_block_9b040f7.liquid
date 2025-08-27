@@ -1,0 +1,1525 @@
+{% doc %}
+  @prompt
+    Create an "Exclusive Deals" section that displays customer-favorite products with countdown timers. The section should have a centered heading "Exclusive Deals" with subtitle "Explore our top-rated, customer-favorite products that everyone's loving!" Below should be a grid of product cards showing product images, titles, descriptions, star ratings, prices with strikethrough original prices, countdown timers with days/hours/minutes/seconds, and "Add to cart" buttons. The layout should be responsive - showing products in a horizontal row on desktop and stacked vertically on mobile. Include proper styling for the countdown timers, product cards with shadows, and ensure the mobile view maintains the same visual hierarchy as desktop but in a single column layout., Good... For the mobile view, make it a slider with arrow at the left and right of the product, I don't like what i'm seeing on the mobile view. let the arrow be on top of the product container and let the product span the mobile view screen completely, Span the product width to fill the full screen on mobile as you did before, I want the arrow at the center of the product container. I want the product container to occupy the full screen width on mobile view for more elegant look. Plus, i want an option to reduce the height on mobile and desktop, Okay... Give me an option to increase the image height on desktop and mobile as well. The image is taking a significant size on the screen, Okay... I want the product image fit into the product image container despite the image height, The "ADD TO CART" Button isn't showing when i added a "End date" and "End time". It overflow the container and hide. Fix this issue, I want an option to adjust the star rating., I need an animation that zoom-in the product image for me to see the complete image, I want it such that if the "Deal ended", it hides the "ADD TO CART" button
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-exclusive-deals-{{ ai_gen_id }} {
+    padding: 60px 20px;
+    background-color: {{ block.settings.background_color }};
+    text-align: center;
+  }
+
+  .ai-exclusive-deals-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-exclusive-deals-header-{{ ai_gen_id }} {
+    margin-bottom: 50px;
+  }
+
+  .ai-exclusive-deals-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 15px;
+    font-weight: 700;
+  }
+
+  .ai-exclusive-deals-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ai-exclusive-deals-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .ai-exclusive-deals-slider-container-{{ ai_gen_id }} {
+    position: relative;
+    margin-top: 40px;
+    display: none;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+
+  .ai-exclusive-deals-slider-{{ ai_gen_id }} {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ai-exclusive-deals-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-exclusive-deals-slider-slide-{{ ai_gen_id }} {
+    flex: 0 0 100vw;
+    min-width: 100vw;
+    padding: 0 20px;
+    box-sizing: border-box;position: relative;
+  }
+
+  .ai-exclusive-deals-slider-arrow-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: {{ block.settings.arrow_background_color }};
+    color: {{ block.settings.arrow_color }};
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .ai-exclusive-deals-slider-arrow-prev-{{ ai_gen_id }} {
+    left: 20px;
+  }
+
+  .ai-exclusive-deals-slider-arrow-next-{{ ai_gen_id }} {
+    right: 20px;
+  }
+
+  .ai-exclusive-deals-slider-arrow-{{ ai_gen_id }}:hover {
+    background: {{ block.settings.arrow_hover_background_color }};
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .ai-exclusive-deals-slider-arrow-{{ ai_gen_id }}:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: translateY(-50%) scale(1);
+  }
+
+  .ai-exclusive-deals-slider-arrow-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ai-exclusive-deals-slider-dots-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .ai-exclusive-deals-slider-dot-{{ ai_gen_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .ai-exclusive-deals-slider-dot-{{ ai_gen_id }}.active {
+    background: {{ block.settings.arrow_color }};
+  }
+
+  .ai-exclusive-deals-card-{{ ai_gen_id }} {
+    background: {{ block.settings.card_background_color }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    height: {{ block.settings.card_height_desktop }}px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-exclusive-deals-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-exclusive-deals-image-container-{{ ai_gen_id }} {
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: hidden;
+    background-color: #f8f8f8;
+    height: {{ block.settings.image_height_desktop }}px;
+    flex-shrink: 0;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .ai-exclusive-deals-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+
+  .ai-exclusive-deals-card-{{ ai_gen_id }}:hover .ai-exclusive-deals-image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-exclusive-deals-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
+
+  .ai-exclusive-deals-image-placeholder-{{ ai_gen_id }} svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.5;
+  }
+
+  .ai-exclusive-deals-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: {{ block.settings.badge_color }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .ai-exclusive-deals-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+  }
+
+  .ai-exclusive-deals-scrollable-content-{{ ai_gen_id }} {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .ai-exclusive-deals-product-title-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ block.settings.product_title_color }};
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .ai-exclusive-deals-product-description-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.product_description_color }};
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ai-exclusive-deals-rating-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ai-exclusive-deals-stars-{{ ai_gen_id }} {
+    display: flex;
+    gap: 2px;
+  }
+
+  .ai-exclusive-deals-star-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+    fill: {{ block.settings.star_color }};
+  }
+
+  .ai-exclusive-deals-star-empty-{{ ai_gen_id }} {
+    fill: #e0e0e0;
+  }
+
+  .ai-exclusive-deals-rating-text-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.rating_text_color }};
+  }
+
+  .ai-exclusive-deals-price-container-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ai-exclusive-deals-price-{{ ai_gen_id }} {
+    font-size: 20px;
+    font-weight: 700;
+    color: {{ block.settings.sale_price_color }};
+  }
+
+  .ai-exclusive-deals-original-price-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: {{ block.settings.original_price_color }};
+    text-decoration: line-through;
+  }
+
+  .ai-exclusive-deals-countdown-{{ ai_gen_id }} {
+    background: {{ block.settings.countdown_background_color }};
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .ai-exclusive-deals-countdown-label-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: {{ block.settings.countdown_label_color }};
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .ai-exclusive-deals-countdown-timer-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .ai-exclusive-deals-countdown-item-{{ ai_gen_id }} {
+    text-align: center;
+    flex: 1;
+  }
+
+  .ai-exclusive-deals-countdown-number-{{ ai_gen_id }} {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: {{ block.settings.countdown_number_color }};
+    line-height: 1;
+  }
+
+  .ai-exclusive-deals-countdown-unit-{{ ai_gen_id }} {
+    font-size: 10px;
+    color: {{ block.settings.countdown_unit_color }};
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .ai-exclusive-deals-countdown-ended-{{ ai_gen_id }} {
+    text-align: center;
+    color: {{ block.settings.countdown_number_color }};
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .ai-exclusive-deals-add-to-cart-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 15px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  .ai-exclusive-deals-add-to-cart-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-exclusive-deals-add-to-cart-{{ ai_gen_id }}.hidden {
+    display: none;
+  }
+
+  .ai-exclusive-deals-empty-state-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+  }
+
+  .ai-exclusive-deals-empty-title-{{ ai_gen_id }} {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #999;
+  }
+
+  .ai-exclusive-deals-empty-text-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: #666;
+  }
+
+  .ai-exclusive-deals-zoom-modal-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .ai-exclusive-deals-zoom-modal-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ai-exclusive-deals-zoom-content-{{ ai_gen_id }} {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+  }
+
+  .ai-exclusive-deals-zoom-modal-{{ ai_gen_id }}.active .ai-exclusive-deals-zoom-content-{{ ai_gen_id }} {
+    transform: scale(1);
+  }
+
+  .ai-exclusive-deals-zoom-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .ai-exclusive-deals-zoom-close-{{ ai_gen_id }} {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .ai-exclusive-deals-zoom-close-{{ ai_gen_id }}:hover {
+    transform: scale(1.1);
+  }
+
+  .ai-exclusive-deals-zoom-close-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+    color: #333;
+  }
+
+  .ai-exclusive-deals-zoom-info-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-exclusive-deals-{{ ai_gen_id }} {
+      padding: 40px 0;
+    }
+
+    .ai-exclusive-deals-container-{{ ai_gen_id }} {
+      padding: 0 20px;
+    }
+
+    .ai-exclusive-deals-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+
+    .ai-exclusive-deals-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-exclusive-deals-grid-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-exclusive-deals-slider-container-{{ ai_gen_id }} {
+      display: block;
+      margin-top: 40px;
+    }
+
+    .ai-exclusive-deals-slider-{{ ai_gen_id }} {
+      padding: 0;
+    }
+
+    .ai-exclusive-deals-card-{{ ai_gen_id }} {
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      height: {{ block.settings.card_height_mobile }}px;
+    }
+
+    .ai-exclusive-deals-image-container-{{ ai_gen_id }} {
+      height: {{ block.settings.image_height_mobile }}px;
+    }
+
+    .ai-exclusive-deals-countdown-timer-{{ ai_gen_id }} {
+      gap: 4px;
+    }
+
+    .ai-exclusive-deals-countdown-number-{{ ai_gen_id }} {
+      font-size: 14px;
+    }
+
+    .ai-exclusive-deals-countdown-{{ ai_gen_id }} {
+      padding: 10px;
+    }
+
+    .ai-exclusive-deals-scrollable-content-{{ ai_gen_id }} {
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .ai-exclusive-deals-slider-arrow-{{ ai_gen_id }} {
+      width: 40px;
+      height: 40px;
+    }
+
+    .ai-exclusive-deals-slider-arrow-{{ ai_gen_id }} svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .ai-exclusive-deals-slider-arrow-prev-{{ ai_gen_id }} {
+      left: 15px;
+    }
+
+    .ai-exclusive-deals-slider-arrow-next-{{ ai_gen_id }} {
+      right: 15px;
+    }
+
+    .ai-exclusive-deals-zoom-content-{{ ai_gen_id }} {
+      max-width: 95vw;
+      max-height: 85vh;
+    }
+
+    .ai-exclusive-deals-zoom-close-{{ ai_gen_id }} {
+      width: 35px;
+      height: 35px;
+      top: -10px;
+      right: -10px;
+    }
+
+    .ai-exclusive-deals-zoom-close-{{ ai_gen_id }} svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .ai-exclusive-deals-zoom-info-{{ ai_gen_id }} {
+      bottom: -50px;
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  }
+{% endstyle %}
+
+<exclusive-deals-{{ ai_gen_id }} class="ai-exclusive-deals-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-exclusive-deals-container-{{ ai_gen_id }}">
+    <div class="ai-exclusive-deals-header-{{ ai_gen_id }}">
+      <h2 class="ai-exclusive-deals-title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      <p class="ai-exclusive-deals-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+    </div>
+
+    {% assign has_products = false %}
+    {% assign products_array = '' %}
+    {% for i in (1..6) %}
+      {% assign product_key = 'product_' | append: i %}
+      {% if block.settings[product_key] != blank %}
+        {% assign has_products = true %}
+        {% assign products_array = products_array | append: i | append: ',' %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_products %}
+      <div class="ai-exclusive-deals-grid-{{ ai_gen_id }}">
+        {% for i in (1..6) %}
+          {% assign product_key = 'product_' | append: i %}
+          {% assign end_date_key = 'end_date_' | append: i %}
+          {% assign end_time_key = 'end_time_' | append: i %}
+          {% assign rating_key = 'rating_' | append: i %}
+          {% assign product = block.settings[product_key] %}
+          {% assign end_date = block.settings[end_date_key] %}
+          {% assign end_time = block.settings[end_time_key] %}
+          {% assign rating = block.settings[rating_key] %}
+
+          {% if product != blank %}
+            <div class="ai-exclusive-deals-card-{{ ai_gen_id }}">
+              <div 
+                class="ai-exclusive-deals-image-container-{{ ai_gen_id }}"
+                data-zoom-trigger
+                {% if product.featured_image %}
+                  data-zoom-src="{{ product.featured_image | image_url: width: 2000 }}"
+                  data-zoom-alt="{{ product.featured_image.alt | escape }}"
+                {% endif %}
+                data-product-title="{{ product.title | escape }}">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 400}}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="ai-exclusive-deals-image-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="400"
+                    height="400"
+                  >
+                {% else %}
+                  <div class="ai-exclusive-deals-image-placeholder-{{ ai_gen_id }}">
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  </div>
+                {% endif %}
+                <div class="ai-exclusive-deals-badge-{{ ai_gen_id }}">Deal</div>
+              </div>
+
+              <div class="ai-exclusive-deals-content-{{ ai_gen_id }}">
+                <div class="ai-exclusive-deals-scrollable-content-{{ ai_gen_id }}">
+                  <h3 class="ai-exclusive-deals-product-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+                  {% if product.description != blank %}
+                    <p class="ai-exclusive-deals-product-description-{{ ai_gen_id }}">
+                      {{ product.description | strip_html | truncate: 100 }}
+                    </p>
+                  {% endif %}<div class="ai-exclusive-deals-rating-{{ ai_gen_id }}">
+                    <div class="ai-exclusive-deals-stars-{{ ai_gen_id }}">
+                      {% for star in (1..5) %}
+                        <svg class="ai-exclusive-deals-star-{{ ai_gen_id }} {% if star > rating %}ai-exclusive-deals-star-empty-{{ ai_gen_id }}{% endif %}" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                      {% endfor %}
+                    </div>
+                    <span class="ai-exclusive-deals-rating-text-{{ ai_gen_id }}">({{ rating }}.0)</span>
+                  </div>
+
+                  <div class="ai-exclusive-deals-price-container-{{ ai_gen_id }}">
+                    <span class="ai-exclusive-deals-price-{{ ai_gen_id }}">{{ product.price | money }}</span>
+                    {% if product.compare_at_price > product.price %}
+                      <span class="ai-exclusive-deals-original-price-{{ ai_gen_id }}">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </div>
+
+                  {% if end_date != blank %}
+                    <div class="ai-exclusive-deals-countdown-{{ ai_gen_id }}">
+                      <div class="ai-exclusive-deals-countdown-label-{{ ai_gen_id }}">Deal ends in</div>
+                      <div
+                        class="ai-exclusive-deals-countdown-timer-{{ ai_gen_id }}"
+                        data-end-date="{{ end_date }}"
+                        data-end-time="{{ end_time | default: '23:59' }}"
+                      >
+                        <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                          <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-days>00</span>
+                          <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Days</span>
+                        </div>
+                        <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                          <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-hours>00</span>
+                          <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Hours</span>
+                        </div>
+                        <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                          <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-minutes>00</span>
+                          <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Min</span>
+                        </div>
+                        <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                          <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-seconds>00</span>
+                          <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Sec</span>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <button
+                  class="ai-exclusive-deals-add-to-cart-{{ ai_gen_id }}"
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                  data-card-index="{{ i }}"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="ai-exclusive-deals-slider-container-{{ ai_gen_id }}">
+        <div class="ai-exclusive-deals-slider-{{ ai_gen_id }}">
+          <button class="ai-exclusive-deals-slider-arrow-{{ ai_gen_id }} ai-exclusive-deals-slider-arrow-prev-{{ ai_gen_id }}" aria-label="Previous product">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+          </button>
+          
+          <button class="ai-exclusive-deals-slider-arrow-{{ ai_gen_id }} ai-exclusive-deals-slider-arrow-next-{{ ai_gen_id }}" aria-label="Next product">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+          
+          <div class="ai-exclusive-deals-slider-track-{{ ai_gen_id }}">
+            {% for i in (1..6) %}
+              {% assign product_key = 'product_' | append: i %}
+              {% assign end_date_key = 'end_date_' | append: i %}
+              {% assign end_time_key = 'end_time_' | append: i %}
+              {% assign rating_key = 'rating_' | append: i %}
+              {% assign product = block.settings[product_key] %}
+              {% assign end_date = block.settings[end_date_key] %}
+              {% assign end_time = block.settings[end_time_key] %}
+              {% assign rating = block.settings[rating_key] %}
+
+              {% if product != blank %}
+                <div class="ai-exclusive-deals-slider-slide-{{ ai_gen_id }}">
+                  <div class="ai-exclusive-deals-card-{{ ai_gen_id }}">
+                    <div 
+                      class="ai-exclusive-deals-image-container-{{ ai_gen_id }}"
+                      data-zoom-trigger
+                      {% if product.featured_image %}
+                        data-zoom-src="{{ product.featured_image | image_url: width: 2000 }}"
+                        data-zoom-alt="{{ product.featured_image.alt | escape }}"
+                      {% endif %}
+                      data-product-title="{{ product.title | escape }}"
+                    >
+                      {% if product.featured_image %}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 400 }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          class="ai-exclusive-deals-image-{{ ai_gen_id }}"
+                          loading="lazy"
+                          width="400"
+                          height="400"
+                        >
+                      {% else %}
+                        <div class="ai-exclusive-deals-image-placeholder-{{ ai_gen_id }}">
+                          {{ 'product-1' | placeholder_svg_tag }}
+                        </div>
+                      {% endif %}
+                      <div class="ai-exclusive-deals-badge-{{ ai_gen_id }}">Deal</div>
+                    </div>
+
+                    <div class="ai-exclusive-deals-content-{{ ai_gen_id }}">
+                      <div class="ai-exclusive-deals-scrollable-content-{{ ai_gen_id }}">
+                        <h3 class="ai-exclusive-deals-product-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+                        {% if product.description != blank %}
+                          <p class="ai-exclusive-deals-product-description-{{ ai_gen_id }}">
+                            {{ product.description | strip_html | truncate: 100 }}
+                          </p>
+                        {% endif %}
+
+                        <div class="ai-exclusive-deals-rating-{{ ai_gen_id }}">
+                          <div class="ai-exclusive-deals-stars-{{ ai_gen_id }}">
+                            {% for star in (1..5) %}
+                              <svg class="ai-exclusive-deals-star-{{ ai_gen_id }} {% if star > rating %}ai-exclusive-deals-star-empty-{{ ai_gen_id }}{% endif %}" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                              </svg>
+                            {% endfor %}
+                          </div>
+                          <span class="ai-exclusive-deals-rating-text-{{ ai_gen_id }}">({{ rating }}.0)</span>
+                        </div>
+
+                        <div class="ai-exclusive-deals-price-container-{{ ai_gen_id }}">
+                          <span class="ai-exclusive-deals-price-{{ ai_gen_id }}">{{ product.price | money }}</span>
+                          {% if product.compare_at_price > product.price %}
+                            <span class="ai-exclusive-deals-original-price-{{ ai_gen_id }}">{{ product.compare_at_price | money }}</span>
+                          {% endif %}
+                        </div>
+
+                        {% if end_date != blank %}
+                          <div class="ai-exclusive-deals-countdown-{{ ai_gen_id }}">
+                            <div class="ai-exclusive-deals-countdown-label-{{ ai_gen_id }}">Deal ends in</div>
+                            <div 
+                              class="ai-exclusive-deals-countdown-timer-{{ ai_gen_id }}"
+                              data-end-date="{{ end_date }}"
+                              data-end-time="{{ end_time | default: '23:59' }}"
+                            >
+                              <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                                <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-days>00</span>
+                                <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Days</span>
+                              </div>
+                              <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                                <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-hours>00</span>
+                                <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Hours</span>
+                              </div>
+                              <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                                <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-minutes>00</span>
+                                <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Min</span>
+                              </div>
+                              <div class="ai-exclusive-deals-countdown-item-{{ ai_gen_id }}">
+                                <span class="ai-exclusive-deals-countdown-number-{{ ai_gen_id }}" data-seconds>00</span>
+                                <span class="ai-exclusive-deals-countdown-unit-{{ ai_gen_id }}">Sec</span>
+                              </div>
+                            </div>
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <button 
+                        class="ai-exclusive-deals-add-to-cart-{{ ai_gen_id }}"
+                        data-product-id="{{ product.id }}"
+                        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                        data-card-index="{{ i }}"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="ai-exclusive-deals-slider-dots-{{ ai_gen_id }}">
+          {% for i in (1..6) %}
+            {% assign product_key = 'product_' | append: i %}
+            {% if block.settings[product_key] != blank %}
+              <div class="ai-exclusive-deals-slider-dot-{{ ai_gen_id }}" data-slide="{{ forloop.index0 }}"></div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="ai-exclusive-deals-empty-state-{{ ai_gen_id }}">
+        <h3 class="ai-exclusive-deals-empty-title-{{ ai_gen_id }}">No products selected</h3>
+        <p class="ai-exclusive-deals-empty-text-{{ ai_gen_id }}">Add products to display your exclusive deals</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ai-exclusive-deals-zoom-modal-{{ ai_gen_id }}" data-zoom-modal>
+    <div class="ai-exclusive-deals-zoom-content-{{ ai_gen_id }}">
+      <img class="ai-exclusive-deals-zoom-image-{{ ai_gen_id }}" data-zoom-image alt="">
+      <button class="ai-exclusive-deals-zoom-close-{{ ai_gen_id }}" data-zoom-close aria-label="Close zoom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="ai-exclusive-deals-zoom-info-{{ ai_gen_id }}" data-zoom-info></div>
+    </div>
+  </div>
+</exclusive-deals-{{ ai_gen_id }}>
+
+<script>
+(function() {
+  class ExclusiveDeals{{ ai_gen_id }} extends HTMLElement {
+    constructor() {
+      super();
+      this.countdownTimers = [];
+      this.currentSlide = 0;
+      this.totalSlides = 0;
+    }
+
+    connectedCallback() {
+      this.initCountdowns();
+      this.initAddToCart();
+      this.initSlider();
+      this.initZoom();
+    }
+
+    initZoom() {
+      this.zoomModal = this.querySelector('[data-zoom-modal]');
+      this.zoomImage = this.querySelector('[data-zoom-image]');
+      this.zoomInfo = this.querySelector('[data-zoom-info]');
+      this.zoomClose = this.querySelector('[data-zoom-close]');
+      this.zoomTriggers = this.querySelectorAll('[data-zoom-trigger]');
+
+      this.zoomTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          const zoomSrc = trigger.dataset.zoomSrc;
+          const zoomAlt = trigger.dataset.zoomAlt || '';
+          const productTitle = trigger.dataset.productTitle || '';
+
+          if (zoomSrc) {
+            this.openZoom(zoomSrc, zoomAlt, productTitle);
+          }
+        });
+      });
+
+      this.zoomClose.addEventListener('click', () => this.closeZoom());
+      
+      this.zoomModal.addEventListener('click', (e) => {
+        if (e.target === this.zoomModal) {
+          this.closeZoom();
+        }
+      });document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.zoomModal.classList.contains('active')) {
+          this.closeZoom();
+        }
+      });
+    }
+
+    openZoom(src, alt, title) {
+      this.zoomImage.src = src;
+      this.zoomImage.alt = alt;
+      this.zoomInfo.textContent = title;
+      this.zoomModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    closeZoom() {
+      this.zoomModal.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        this.zoomImage.src = '';
+        this.zoomImage.alt = '';
+        this.zoomInfo.textContent = '';
+      }, 300);
+    }
+
+    initSlider() {
+      this.sliderTrack = this.querySelector('.ai-exclusive-deals-slider-track-{{ ai_gen_id }}');
+      this.prevButton = this.querySelector('.ai-exclusive-deals-slider-arrow-prev-{{ ai_gen_id }}');
+      this.nextButton = this.querySelector('.ai-exclusive-deals-slider-arrow-next-{{ ai_gen_id }}');
+      this.slides = this.querySelectorAll('.ai-exclusive-deals-slider-slide-{{ ai_gen_id }}');
+      this.dots = this.querySelectorAll('.ai-exclusive-deals-slider-dot-{{ ai_gen_id }}');
+      if (!this.sliderTrack || !this.slides.length) return;
+      
+      this.totalSlides = this.slides.length;
+      this.updateSliderPosition();
+      this.updateArrowStates();
+      this.updateDots();
+      
+      this.prevButton.addEventListener('click', () => this.prevSlide());
+      this.nextButton.addEventListener('click', () => this.nextSlide());
+      
+      this.dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => this.goToSlide(index));
+      });
+    }
+
+    prevSlide() {
+      if (this.currentSlide > 0) {
+        this.currentSlide--;
+        this.updateSliderPosition();
+        this.updateArrowStates();
+        this.updateDots();
+      }
+    }
+
+    nextSlide() {
+      if (this.currentSlide < this.totalSlides - 1) {
+        this.currentSlide++;
+        this.updateSliderPosition();
+        this.updateArrowStates();
+        this.updateDots();
+      }
+    }
+
+    goToSlide(index) {
+      this.currentSlide = index;
+      this.updateSliderPosition();
+      this.updateArrowStates();
+      this.updateDots();
+    }
+
+    updateSliderPosition() {
+      const translateX = -(this.currentSlide * 100);
+      this.sliderTrack.style.transform = `translateX(${translateX}vw)`;
+    }
+
+    updateArrowStates() {
+      this.prevButton.disabled = this.currentSlide === 0;
+      this.nextButton.disabled = this.currentSlide >= this.totalSlides - 1;
+    }
+
+    updateDots() {
+      this.dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === this.currentSlide);
+      });
+    }
+
+    hideAddToCartButton(cardIndex) {
+      const buttons = this.querySelectorAll(`[data-card-index="${cardIndex}"]`);
+      buttons.forEach(button => {
+        button.classList.add('hidden');
+      });
+    }
+
+    initCountdowns() {
+      const countdowns = this.querySelectorAll('.ai-exclusive-deals-countdown-timer-{{ ai_gen_id }}');
+      countdowns.forEach(countdown => {
+        const endDate = countdown.dataset.endDate;
+        const endTime = countdown.dataset.endTime || '23:59';
+        
+        if (endDate) {
+          const targetDate = new Date(`${endDate}T${endTime}:00`);
+          const card = countdown.closest('.ai-exclusive-deals-card-{{ ai_gen_id }}');
+          const addToCartButton = card.querySelector('.ai-exclusive-deals-add-to-cart-{{ ai_gen_id }}');
+          const cardIndex = addToCartButton ? addToCartButton.dataset.cardIndex : null;
+          
+          const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
+            
+            if (distance < 0) {
+              countdown.innerHTML = '<div class="ai-exclusive-deals-countdown-ended-{{ ai_gen_id }}">Deal Ended</div>';
+              if (cardIndex) {
+                this.hideAddToCartButton(cardIndex);
+              }
+              return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            const daysEl = countdown.querySelector('[data-days]');
+            const hoursEl = countdown.querySelector('[data-hours]');
+            const minutesEl = countdown.querySelector('[data-minutes]');
+            const secondsEl = countdown.querySelector('[data-seconds]');
+            
+            if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+            if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+          };
+          
+          updateCountdown();
+          const interval = setInterval(updateCountdown, 1000);
+          this.countdownTimers.push(interval);
+        }
+      });
+    }
+
+    initAddToCart() {
+      const buttons = this.querySelectorAll('.ai-exclusive-deals-add-to-cart-{{ ai_gen_id }}');
+      
+      buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const variantId = button.dataset.variantId;
+          
+          if (!variantId) return;
+          
+          button.textContent = 'Adding...';
+          button.disabled = true;
+          
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: 1
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            button.textContent = 'Added!';
+            setTimeout(() => {
+              button.textContent = 'Add to Cart';
+              button.disabled = false;
+            }, 2000);
+            document.dispatchEvent(new CustomEvent('cart:updated'));
+          })
+          .catch(error => {
+            button.textContent = 'Error';
+            setTimeout(() => {
+              button.textContent = 'Add to Cart';
+              button.disabled = false;
+            }, 2000);
+          });
+        });
+      });
+    }
+
+    disconnectedCallback() {
+      this.countdownTimers.forEach(timer => clearInterval(timer));
+      document.body.style.overflow = '';
+    }
+  }
+
+  customElements.define('exclusive-deals-{{ ai_gen_id }}', ExclusiveDeals{{ ai_gen_id }});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Exclusive deals",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Exclusive Deals"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Explore our top-rated, customer-favorite products that everyone's loving!"
+    },
+    {
+      "type": "header",
+      "content": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "rating_1",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Star rating",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "end_date_1",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time_1",
+      "label": "End time (HH:MM)",
+      "placeholder": "23:59",
+      "default": "23:59"
+    },
+    {
+      "type": "header",
+      "content": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "rating_2",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Star rating",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "end_date_2",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time_2",
+      "label": "End time (HH:MM)",
+      "placeholder": "23:59",
+      "default": "23:59"
+    },
+    {
+      "type": "header",
+      "content": "Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "rating_3",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Star rating",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "end_date_3",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time_3",
+      "label": "End time (HH:MM)",
+      "placeholder": "23:59",
+      "default": "23:59"
+    },
+    {
+      "type": "header",
+      "content": "Product 4"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "rating_4",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Star rating",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "end_date_4",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time_4",
+      "label": "End time (HH:MM)",
+      "placeholder": "23:59",
+      "default": "23:59"
+    },
+    {
+      "type": "header",
+      "content": "Product 5"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "rating_5",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Star rating",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "end_date_5",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time_5",
+      "label": "End time (HH:MM)",
+      "placeholder": "23:59",
+      "default": "23:59"
+    },
+    {
+      "type": "header",
+      "content": "Product 6"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "rating_6",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Star rating",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "end_date_6",
+      "label": "End date (YYYY-MM-DD)",
+      "placeholder": "2024-12-31"
+    },
+    {
+      "type": "text",
+      "id": "end_time_6",
+      "label": "End time (HH:MM)",
+      "placeholder": "23:59",
+      "default": "23:59"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "card_height_desktop",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Card height on desktop",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "min": 300,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "label": "Card height on mobile",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Image height on desktop",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 120,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Image height on mobile",
+      "default": 180
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_description_color",
+      "label": "Product description",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star rating",
+      "default": "#ffd700"
+    },
+    {
+      "type": "color",
+      "id": "rating_text_color",
+      "label": "Rating text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "sale_price_color",
+      "label": "Sale price",
+      "default": "#e74c3c"
+    },
+    {
+      "type": "color",
+      "id": "original_price_color",
+      "label": "Original price",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "countdown_background_color",
+      "label": "Countdown background",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "countdown_label_color",
+      "label": "Countdown label",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "countdown_number_color",
+      "label": "Countdown numbers",
+      "default": "#e74c3c"
+    },
+    {
+      "type": "color",
+      "id": "countdown_unit_color",
+      "label": "Countdown units",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge background",
+      "default": "#e74c3c"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background_color",
+      "label": "Arrow background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_background_color",
+      "label": "Arrow hover background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Image border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Exclusive deals"
+    }
+  ]
+}
+{% endschema %}

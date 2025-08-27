@@ -1,0 +1,328 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner": {
+      "type": "image-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Mother in Motion Collection",
+            "heading_size": "h0"
+          }
+        },
+        "button": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "SHOP NOW",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "button"
+      ],
+      "settings": {
+        "image_overlay_opacity": 40,
+        "image_height": "large",
+        "image_behavior": "none",
+        "desktop_content_position": "top-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false,
+        "subheading_text": "Inspire your customers with a sophisticated lifestyle message here."
+      }
+    },
+    "1756112219572f381d": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_b19393e_rdXctd": {
+          "type": "ai_gen_block_b19393e",
+          "settings": {
+            "columns_desktop": "3",
+            "columns_mobile": "1",
+            "section_padding": 40,
+            "card_spacing": 20,
+            "card_height": 260,
+            "card_max_width": 500,
+            "card_border_radius": 8,
+            "overlay_opacity": 40,
+            "text_alignment": "left",
+            "text_color": "#ffffff",
+            "offer_font_size": 36,
+            "link_color": "#121212",
+            "link_hover_color": "#ff6b6b",
+            "link_underline_color": "#121212",
+            "link_hover_underline_color": "#ff6b6b",
+            "link_font_size": 14,
+            "card_1_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-5-top.jpg",
+            "card_1_offer_text": "Get 50% off on Summer Styles!",
+            "card_1_link_text": "Shop now",
+            "card_1_link": "",
+            "card_2_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-1-top.jpg",
+            "card_2_offer_text": "Get 30% off on New Arrivals!",
+            "card_2_link_text": "Shop now",
+            "card_2_link": "",
+            "card_3_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-2-top.jpg",
+            "card_3_offer_text": "Buy 2 Get 1 Free on Baby Styles!",
+            "card_3_link_text": "Shop now",
+            "card_3_link": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_b19393e_rdXctd"
+      ],
+      "name": "Promotion-banner cards",
+      "settings": {}
+    },
+    "featured_collection_Rd9Cri": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 10,
+        "title": "<strong>New Products     </strong>",
+        "heading_size": "h1",
+        "description": "<p>Explore our top-rated, customer-favorite products that everyone’s loving!<br/>              </p>",
+        "show_description": false,
+        "description_style": "subtitle",
+        "columns_desktop": 3,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "1756116675e7dc0da9": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_03928a5_peax8r": {
+          "type": "ai_gen_block_03928a5",
+          "settings": {
+            "heading": "Latest Products",
+            "subtitle": "Explore our top-rated, customer-favorite products that everyone's loving!",
+            "collection_1": "candy-collection",
+            "collection_1_title": "Candy Collections",
+            "collection_1_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-5-top.jpg",
+            "collection_2": "",
+            "collection_2_title": "Bloom Collections",
+            "collection_2_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-1-top.jpg",
+            "collection_3": "",
+            "collection_3_title": "Mothers in Motion Collection",
+            "collection_3_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-2-top.jpg",
+            "section_background_color": "#ffffff",
+            "heading_color": "#000000",
+            "subtitle_color": "#666666",
+            "card_text_color": "#ffffff",
+            "arrow_background_color": "#ffffff",
+            "arrow_color": "#000000",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "header_spacing": 40,
+            "title_spacing": 12,
+            "card_spacing": 24,
+            "card_height": 500,
+            "card_border_radius": 16,
+            "card_padding": 24,
+            "heading_size": 36,
+            "subtitle_size": 16,
+            "card_title_size": 18,
+            "arrow_size": 40
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_03928a5_peax8r"
+      ],
+      "name": "Latest Product",
+      "settings": {}
+    },
+    "deal_collection_DAFVp4": {
+      "type": "deal-collection",
+      "name": "Deal Collection",
+      "settings": {
+        "collection": "exclusive-deals",
+        "products_to_show": 3,
+        "heading_size": "h1",
+        "columns_desktop": 3,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 16,
+        "padding_bottom": 36,
+        "heading": "Exclusive Deals",
+        "subheading": "Hurry! Limited time offers just for you",
+        "subheading_font_size": 18,
+        "heading_subheading_spacing": -10,
+        "text_alignment": "left"
+      }
+    },
+    "1756137011a4b50a0e": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_fe0fb4b_3rKETb": {
+          "type": "ai_gen_block_fe0fb4b",
+          "settings": {
+            "background_image": "shopify://shop_images/baby-and-toddler-apparel-minimal-5-top.jpg",
+            "overlay_opacity": 40,
+            "heading": "Dream Big Marigold Dress",
+            "subheading": "Sleeveless dress featuring a gathered waist, oversized side bow, and playful pastel bows at the neckline.",
+            "content_max_width": 700,
+            "button_primary_text": "Shop now",
+            "button_primary_link": "",
+            "button_secondary_text": "",
+            "button_secondary_link": "",
+            "section_height": 600,
+            "section_height_mobile": 450,
+            "spacing_between_elements": 20,
+            "heading_size": 48,
+            "subheading_size": 18,
+            "heading_color": "#ffffff",
+            "subheading_color": "#ffffff",
+            "button_font_size": 16,
+            "button_padding_vertical": 16,
+            "button_padding_horizontal": 32,
+            "button_border_radius": 6,
+            "button_text_transform": "uppercase",
+            "button_primary_background_color": "#ffffff",
+            "button_primary_text_color": "#000000",
+            "button_primary_hover_background_color": "#121212",
+            "button_primary_hover_text_color": "#ffffff",
+            "button_secondary_background_color": "rgba(0,0,0,0)",
+            "button_secondary_text_color": "#ffffff",
+            "button_secondary_hover_background_color": "#ffffff",
+            "button_secondary_hover_text_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_fe0fb4b_3rKETb"
+      ],
+      "name": "Dream Big Marigold Dress",
+      "settings": {}
+    },
+    "featured_collection_8riz6D": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "twirl-collection",
+        "products_to_show": 7,
+        "title": "<strong>What we think you'll like</strong>",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": true,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "link",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "arch",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 16,
+        "padding_bottom": 0
+      }
+    },
+    "17561361186c5ab58a": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_54065bb_TqP3we": {
+          "type": "ai_gen_block_54065bb",
+          "settings": {
+            "columns_desktop": "4",
+            "columns_mobile": "2",
+            "section_padding": 50,
+            "grid_gap": 30,
+            "badge_padding": 25,
+            "badge_border_radius": 8,
+            "badge_border_width": 1,
+            "background_color": "#ffffff",
+            "badge_background_color": "#ffffff",
+            "badge_border_color": "#e5e5e5",
+            "icon_size": 50,
+            "icon_margin": 15,
+            "icon_color": "#333333",
+            "title_size": 18,
+            "title_margin": 10,
+            "title_weight": "600",
+            "text_size": 14,
+            "text_gap": 10,
+            "title_color": "#333333",
+            "text_color": "#666666",
+            "badge_1_title": "100 Days Return",
+            "badge_1_text": "For an Exchange Product",
+            "badge_2_title": "Secure Card",
+            "badge_2_text": "Safe payment with PEV",
+            "badge_3_title": "Customer Services",
+            "badge_3_text": "Contact us Anytime",
+            "badge_4_title": "Free Shipping",
+            "badge_4_text": "For all Orders Over $100"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_54065bb_TqP3we"
+      ],
+      "name": "Trust Badge",
+      "settings": {}
+    }
+  },
+  "order": [
+    "image_banner",
+    "1756112219572f381d",
+    "featured_collection_Rd9Cri",
+    "1756116675e7dc0da9",
+    "deal_collection_DAFVp4",
+    "1756137011a4b50a0e",
+    "featured_collection_8riz6D",
+    "17561361186c5ab58a"
+  ]
+}

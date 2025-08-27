@@ -1,0 +1,620 @@
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .kidsgrooves-footer {
+    background-color: #f8f9fa;
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  .kidsgrooves-footer__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .kidsgrooves-footer__main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .kidsgrooves-footer__column h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .kidsgrooves-footer__brand-info {
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .kidsgrooves-footer__logo {
+    margin-bottom: 15px;
+  }
+
+  .kidsgrooves-footer__logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .kidsgrooves-footer__brand-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .kidsgrooves-footer__contact-info {
+    margin: 20px 0;
+  }
+
+  .kidsgrooves-footer__contact-info p {
+    margin: 8px 0;
+    color: #666;
+  }
+
+  .kidsgrooves-footer__contact-info strong {
+    color: #333;
+  }
+
+  .kidsgrooves-footer__social {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .kidsgrooves-footer__social-link {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .kidsgrooves-footer__social-link:hover {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+  }
+
+  .kidsgrooves-footer__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .kidsgrooves-footer__links li {
+    margin-bottom: 12px;
+  }
+
+  .kidsgrooves-footer__links a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .kidsgrooves-footer__links a:hover {
+    color: #333;
+  }
+
+  .kidsgrooves-footer__newsletter {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+  }
+
+  .kidsgrooves-footer__newsletter-description {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .kidsgrooves-footer__newsletter-form {
+    display: flex;
+    gap: 0;
+    margin-bottom: 15px;
+  }
+
+  .kidsgrooves-footer__newsletter-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-right: 0;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .kidsgrooves-footer__newsletter-input:focus {
+    border-color: #333;
+  }
+
+  .kidsgrooves-footer__newsletter-button {
+    padding: 12px 20px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+  }
+
+  .kidsgrooves-footer__newsletter-button:hover {
+    background: #555;
+  }
+
+  .kidsgrooves-footer__newsletter-terms {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  .kidsgrooves-footer__newsletter-terms a {
+    color: #666;
+    text-decoration: underline;
+  }
+
+  .kidsgrooves-footer__bottom {
+    border-top: 1px solid #e9ecef;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .kidsgrooves-footer__copyright {
+    color: #666;
+    font-size: 14px;
+  }
+
+  .kidsgrooves-footer__copyright a {
+    color: #666;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .kidsgrooves-footer__copyright a:hover {
+    color: #333;
+  }
+
+  .kidsgrooves-footer__payment-icons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .kidsgrooves-footer__payment-icon {
+    width: 40px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px;
+  }
+
+  .kidsgrooves-footer__payment-icon img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  @media screen and (min-width: 768px) {
+    .kidsgrooves-footer {
+      margin-top: {{ section.settings.margin_top }}px;
+    }
+
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .kidsgrooves-footer__main {
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .kidsgrooves-footer__main {
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 60px;
+    }
+
+    .kidsgrooves-footer__bottom {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .newsletter-form__message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .newsletter-form__message--success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .newsletter-form__message--error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+{%- endstyle -%}
+
+<footer class="kidsgrooves-footer color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
+  <div class="kidsgrooves-footer__content">
+    <div class="kidsgrooves-footer__main">
+      
+      <!-- Brand Information Column -->
+      <div class="kidsgrooves-footer__column">
+        {%- if section.settings.logo != blank -%}
+          <div class="kidsgrooves-footer__logo">
+            <img 
+              src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" 
+              alt="{{ section.settings.brand_name | default: 'Ava&George' }}"
+              width="{{ section.settings.logo_width }}"
+              height="auto"
+              loading="lazy"
+            >
+          </div>
+        {%- else -%}
+          <div class="kidsgrooves-footer__brand-title">{{ section.settings.brand_name | default: 'Ava&George' }}</div>
+        {%- endif -%}
+        <div class="kidsgrooves-footer__brand-info">
+          <p>{{ section.settings.brand_description | default: 'Lorem ipsum dolor sit amet consectetur. Amet ut viverra morbi in venenatis auctor turpis. Quisque at volutpat ac.' }}</p>
+          
+          <div class="kidsgrooves-footer__contact-info">
+            {%- if section.settings.phone_number != blank -%}
+              <p><strong>Phone:</strong> {{ section.settings.phone_number }}</p>
+            {%- endif -%}
+            {%- if section.settings.email_address != blank -%}
+              <p><strong>Email:</strong> {{ section.settings.email_address }}</p>
+            {%- endif -%}
+            {%- if section.settings.address != blank -%}
+              <p><strong>Address:</strong> {{ section.settings.address }}</p>
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.show_social -%}
+            <div class="kidsgrooves-footer__social">
+              {%- if settings.social_instagram_link != blank -%}
+                <a href="{{ settings.social_instagram_link }}" class="kidsgrooves-footer__social-link" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+              {%- if settings.social_twitter_link != blank -%}
+                <a href="{{ settings.social_twitter_link }}" class="kidsgrooves-footer__social-link" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+              {%- if settings.social_facebook_link != blank -%}
+                <a href="{{ settings.social_facebook_link }}" class="kidsgrooves-footer__social-link" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Company Links Column -->
+      <div class="kidsgrooves-footer__column">
+        <h3>{{ section.settings.company_heading | default: 'OUR COMPANY' }}</h3>
+        {%- if section.settings.company_menu != blank -%}
+          <ul class="kidsgrooves-footer__links">
+            {%- for link in section.settings.company_menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <ul class="kidsgrooves-footer__links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/pages/about-us">About Us</a></li>
+            <li><a href="/collections">Our Stores</a></li>
+            <li><a href="/pages/contact">Contact Us</a></li>
+            <li><a href="/pages/size-guide">Size Guide</a></li>
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="kidsgrooves-footer__column">
+        <h3>{{ section.settings.quick_links_heading | default: 'QUICK LINKS' }}</h3>
+        {%- if section.settings.quick_links_menu != blank -%}
+          <ul class="kidsgrooves-footer__links">
+            {%- for link in section.settings.quick_links_menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <ul class="kidsgrooves-footer__links">
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/pages/faq">Theme FAQs</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/search">Advanced Search</a></li>
+            <li><a href="/policies/terms-of-service">Term & Conditions</a></li>
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <!-- Newsletter Column -->
+      <div class="kidsgrooves-footer__column">
+        <h3>{{ section.settings.newsletter_heading | default: 'Sign Up To Newsletter' }}</h3>
+        <div class="kidsgrooves-footer__newsletter">
+          <p class="kidsgrooves-footer__newsletter-description">
+            {{ section.settings.newsletter_description | default: 'Join 60.000+ subscribers and get a new discount coupon on every Saturday.' }}
+          </p>
+          
+          {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            
+            <div class="kidsgrooves-footer__newsletter-form">
+              <input
+                id="NewsletterForm--{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                class="kidsgrooves-footer__newsletter-input"
+                value="{{ form.email }}"
+                aria-required="true"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                {% if form.errors %}
+                  autofocus
+                  aria-invalid="true"
+                  aria-describedby="ContactFooter-error"
+                {% elsif form.posted_successfully? %}
+                  aria-describedby="ContactFooter-success"
+                {% endif %}
+                placeholder="Your email address..."
+                required
+              >
+              <button
+                type="submit"
+                class="kidsgrooves-footer__newsletter-button"
+                name="commit"
+                id="Subscribe"
+                aria-label="Subscribe to newsletter"
+              >
+                Subscribe
+              </button>
+            </div>
+
+            {%- if form.errors -%}
+              <div class="newsletter-form__message newsletter-form__message--error" id="ContactFooter-error">
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </div>
+            {%- endif -%}
+
+            {%- if form.posted_successfully? -%}
+              <div class="newsletter-form__message newsletter-form__message--success" id="ContactFooter-success">
+                Thank you for subscribing!
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+
+          <p class="kidsgrooves-footer__newsletter-terms">
+            By entering the e-mail you accept the <a href="/policies/terms-of-service">terms and conditions</a> and the <a href="/policies/privacy-policy">privacy policy</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="kidsgrooves-footer__bottom">
+      <div class="kidsgrooves-footer__copyright">
+        <p>&copy; <span id="current-year"></span> All Rights Copyright <a href="{{ routes.root_url }}"><strong>{{ section.settings.brand_name | default: 'Ava&George' }}</strong></a>.</p>
+      </div>
+
+      {%- if section.settings.show_payment_icons -%}
+        <div class="kidsgrooves-footer__payment-icons">
+          {%- for type in shop.enabled_payment_types -%}
+            <div class="kidsgrooves-footer__payment-icon">
+              {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentYearElement = document.getElementById('current-year');
+    if (currentYearElement) {
+      currentYearElement.textContent = new Date().getFullYear();
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "KidsGrooves Footer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Brand Information"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Upload your brand logo. If no logo is uploaded, the brand name text will be displayed instead."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 150
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name (fallback if no logo)",
+      "default": "Ava&George"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "Lorem ipsum dolor sit amet consectetur. Amet ut viverra morbi in venenatis auctor turpis. Quisque at volutpat ac."
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number",
+      "default": "+391 (0)35 2568 4593"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email Address",
+      "default": "kidsgrooves@domain.com"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "502 New Design , Melbourne"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social media icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation Menus"
+    },
+    {
+      "type": "text",
+      "id": "company_heading",
+      "label": "Company Section Heading",
+      "default": "OUR COMPANY"
+    },
+    {
+      "type": "link_list",
+      "id": "company_menu",
+      "label": "Company Menu"
+    },
+    {
+      "type": "text",
+      "id": "quick_links_heading",
+      "label": "Quick Links Section Heading",
+      "default": "QUICK LINKS"
+    },
+    {
+      "type": "link_list",
+      "id": "quick_links_menu",
+      "label": "Quick Links Menu"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Sign Up To Newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_description",
+      "label": "Newsletter Description",
+      "default": "Join 60.000+ subscribers and get a new discount coupon on every Saturday."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}
